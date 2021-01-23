@@ -6,7 +6,7 @@ from arcanoid.scenes.base import BaseScene
 
 class GameOverScene(BaseScene):
     text_format = 'Game over ({})'
-    seconds_to_end = 3
+    seconds_to_end = 5
 
     def __init__(self, game):
         super().__init__(game)
@@ -21,7 +21,16 @@ class GameOverScene(BaseScene):
         return self.text_format.format(self.seconds_to_end - self.last_seconds_passed)
 
     def on_activate(self):
+        self.objects = [self.text]
         self.update_start_time()
+        self.update_scores()
+
+    def update_scores(self):
+        self.scores = sorted([int(score[:-1]) for score in open("high_scores.txt").readlines()], reverse=True)
+        self.text_scores = [TextObject(self.game, self.game.width // 2, i * 30 + 50,
+                                       f'{i+1}: {self.scores[i]}', (255, 255, 255)) for i in range(len(self.scores))]
+        for text_score in self.text_scores:
+            self.objects.append(text_score)
 
     def update_start_time(self):
         self.time_start = datetime.now()

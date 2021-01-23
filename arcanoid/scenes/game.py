@@ -8,9 +8,6 @@ from arcanoid.scenes.base import BaseScene
 
 
 class GameScene(BaseScene):
-    max_collisions = 15
-    balls_count = 3
-
     def __init__(self, game):
         super().__init__(game)
         self.ball = BallObject(game)
@@ -23,6 +20,9 @@ class GameScene(BaseScene):
         self.objects.append(self.platform)
         self.objects.append(self.bottom_border)
         self.objects.append(self.timer_text)
+
+    def on_activate(self):
+        self.timer = time.time()
 
     def process_event(self, event):
         if event.type == pygame.KEYDOWN:
@@ -40,6 +40,9 @@ class GameScene(BaseScene):
         if self.ball.collides_with_platform(self.platform):
             self.ball.bounce()
         if self.ball.collides_with_bottom_border(self.bottom_border):
+            high_scores_file = open("high_scores.txt", "a")
+            high_scores_file.write(str(int(time.time() - self.timer))+"\n")
+            high_scores_file.close()
             self.game.set_scene(self.game.SCENE_GAME_OVER)
 
     def get_timer_text(self):
