@@ -1,4 +1,5 @@
 import pygame
+import random
 from arcanoid.objects.image import ImageObject
 
 
@@ -12,14 +13,18 @@ class BallObject(ImageObject):
         self.rect.x = x if x else game.width // 2
         self.rect.y = y if y else game.height // 2
         self.radius = self.rect.width // 2
-        self.speed = speed if speed else [2, -2]
+        self.speed = speed if speed else [self.get_random_speed(), self.get_random_speed()]
         self.shift = [0.5 for _ in range(2)]
+
+    @staticmethod
+    def get_random_speed():
+        return random.choice([1, -1]) * (random.random() + 1)
 
     def collides_with_platform(self, platform):
         return pygame.sprite.collide_rect(self, platform)
 
-    def collides_with_bottom_border(self, bottom_border):
-        return pygame.sprite.collide_rect(self, bottom_border)
+    def collides_with_border(self, border):
+        return pygame.sprite.collide_rect(self, border)
 
     def bounce(self):
         self.speed[1] = -1 * self.speed[1]

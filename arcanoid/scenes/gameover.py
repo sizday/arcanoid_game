@@ -26,9 +26,9 @@ class GameOverScene(BaseScene):
         self.update_scores()
 
     def update_scores(self):
-        self.scores = sorted([int(score[:-1]) for score in open("high_scores.txt").readlines()], reverse=True)
+        self.scores = [score[:-1] for score in open("high_scores.txt").readlines()]
         self.text_scores = [TextObject(self.game, self.game.width // 2, i * 30 + 50,
-                                       f'{i+1}: {self.scores[i]}', (255, 255, 255)) for i in range(len(self.scores))]
+                                       f'{self.scores[i]}', (255, 255, 255)) for i in range(len(self.scores))]
         for text_score in self.text_scores:
             self.objects.append(text_score)
 

@@ -20,4 +20,6 @@ class MenuScene(BaseScene):
         )
 
     def start_game(self):
+        self.game.scores[0] = 0
+        self.game.scores[1] = 0
         self.game.set_scene(self.game.SCENE_GAME)

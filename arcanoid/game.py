@@ -11,9 +11,11 @@ class Game:
     SCENE_MENU = 0
     SCENE_GAME = 1
     SCENE_GAME_OVER = 2
+    scores = [0, 0]
     current_scene_index = SCENE_MENU
 
     def __init__(self):
+        open("high_scores.txt", "w").write("")
         self.screen = pygame.display.set_mode(self.size)
         self.scenes = [
             MenuScene(self),
